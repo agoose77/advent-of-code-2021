@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import numpy as np
+import sys
+
+depths = np.loadtxt(sys.stdin, dtype=np.int64)
+single_increasing = np.sum(depths[1:] > depths[:-1])
+print(f"1) {single_increasing}")
+
+triples_sum = np.lib.stride_tricks.sliding_window_view(depths, 3).sum(axis=-1)
+triple_increasing = np.sum(triples_sum[1:] > triples_sum[:-1])
+print(f"2) {triple_increasing}")
