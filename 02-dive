@@ -61,8 +61,8 @@ def main(command_lines):
         state_a = process_command_a(command, state_a)
         state_b = process_command_b(command, state_b)
 
-    print(state_a.depth * state_a.position)
-    print(state_b.depth * state_b.position)
+    print(f"1) {state_a.depth * state_a.position}")
+    print(f"2) {state_b.depth * state_b.position}")
 
 
 if __name__ == "__main__":
