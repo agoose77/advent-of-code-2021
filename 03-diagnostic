@@ -31,12 +31,11 @@ def least_common_value(array):
 def compute_life_support_rating(indicator, criterion):
     n, n_bits = indicator.shape
 
-    mask = np.full(n, True)
     for i in range(n_bits):
-        mask &= indicator[:, i] == criterion(indicator[mask, i])
-        rating = indicator[mask]
-        if len(rating) == 1:
-            return bin_to_decimal(rating[0])
+        bit = indicator[:, i]
+        indicator = indicator[bit == criterion(bit)]
+        if len(indicator) == 1:
+            return bin_to_decimal(indicator[0])
     raise ValueError
 
 
