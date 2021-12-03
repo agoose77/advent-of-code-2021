@@ -5,13 +5,13 @@ import sys
 import numpy as np
 
 
-def bin_to_decimal(array):
+def bin_to_decimal(array: np.ndarray) -> int:
     n_bits = array.shape[-1]
     coefficient = (2 ** np.arange(n_bits))[::-1]
     return np.sum(coefficient * array, axis=-1)
 
 
-def compute_power_consumption(indicator):
+def compute_power_consumption(indicator: np.ndarray) -> int:
     n, n_bits = indicator.shape
 
     gamma_bit = np.around(np.mean(indicator, axis=0)).astype(np.int64)
@@ -20,15 +20,15 @@ def compute_power_consumption(indicator):
     return bin_to_decimal(epsilon_bit) * bin_to_decimal(gamma_bit)
 
 
-def most_common_value(array):
+def most_common_value(array: np.ndarray) -> np.ndarray:
     return np.floor(0.5 + array.mean(axis=0)).astype(array.dtype)
 
 
-def least_common_value(array):
+def least_common_value(array: np.ndarray) -> np.ndarray:
     return 1 - most_common_value(array)
 
 
-def compute_life_support_rating(indicator, criterion):
+def compute_life_support_rating(indicator: np.ndarray, criterion) -> int:
     n, n_bits = indicator.shape
 
     for i in range(n_bits):
