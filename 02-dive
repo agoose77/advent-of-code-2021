@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-import sys
 import dataclasses
+import sys
 
 
 @dataclasses.dataclass
@@ -51,12 +51,12 @@ def process_command_b(command, state):
         return state.evolve(aim=state.aim - command.operand)
 
 
-def main(command_lines):
+def process_commands(command_lines):
     commands = [Command.from_string(c) for c in command_lines]
 
     state_a = StateA(0, 0)
     state_b = StateB(0, 0, 0)
-    
+
     for command in commands:
         state_a = process_command_a(command, state_a)
         state_b = process_command_b(command, state_b)
@@ -65,9 +65,13 @@ def main(command_lines):
     print(f"2) {state_b.depth * state_b.position}")
 
 
-if __name__ == "__main__":
+def main(argv=None):
     parser = argparse.ArgumentParser("Dive, Dive!")
     parser.add_argument("file", type=argparse.FileType("r"), default=sys.stdin)
-    args = parser.parse_args()
+    args = parser.parse_args(args=argv)
 
-    main(args.file.readlines())
+    process_commands(args.file.readlines())
+
+
+if __name__ == "__main__":
+    main()
