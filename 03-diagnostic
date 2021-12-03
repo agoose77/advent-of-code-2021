@@ -13,7 +13,6 @@ def bin_to_decimal(array):
 
 def compute_power_consumption(indicator):
     n, n_bits = indicator.shape
-    coefficient = 2 ** np.arange(n_bits)
 
     gamma_bit = np.around(np.mean(indicator, axis=0)).astype(np.int64)
     epsilon_bit = 1 - gamma_bit
