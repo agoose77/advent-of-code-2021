@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+
+import numpy as np
+
+
+def bin_to_decimal(array):
+    n_bits = array.shape[-1]
+    coefficient = (2 ** np.arange(n_bits))[::-1]
+    return np.sum(coefficient * array, axis=-1)
+
+
+def compute_power_consumption(indicator):
+    n, n_bits = indicator.shape
+    coefficient = 2 ** np.arange(n_bits)
+
+    gamma_bit = np.around(np.mean(indicator, axis=0)).astype(np.int64)
+    epsilon_bit = 1 - gamma_bit
+
+    return bin_to_decimal(epsilon_bit) * bin_to_decimal(gamma_bit)
+
+
+def most_common_value(array):
+    return np.floor(0.5 + array.mean(axis=0)).astype(array.dtype)
+
+
+def least_common_value(array):
+    return 1 - most_common_value(array)
+
+
+def compute_life_support_rating(indicator, criterion):
+    n, n_bits = indicator.shape
+
+    mask = np.full(n, True)
+    for i in range(n_bits):
+        mask &= indicator[:, i] == criterion(indicator[mask, i])
+        rating = indicator[mask]
+        if len(rating) == 1:
+            return bin_to_decimal(rating[0])
+    raise ValueError
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser("Diagnostics")
+    parser.add_argument("file", type=argparse.FileType("r"), default=sys.stdin)
+    args = parser.parse_args(args=argv)
+
+    indicator = np.genfromtxt(args.file, dtype=np.int64, delimiter=1, autostrip=True)
+
+    power_consumption = compute_power_consumption(indicator)
+    print(f"1) {power_consumption}")
+
+    oxygen_rating = compute_life_support_rating(indicator, most_common_value)
+    co2_rating = compute_life_support_rating(indicator, least_common_value)
+    print(f"2) {oxygen_rating * co2_rating}")
+
+
+if __name__ == "__main__":
+    main()
