@@ -7,6 +7,7 @@ authors = [
 ]
 dependencies = [
     "numpy>=1.21.1",
+    "awkward~=1.7",
 ]
 requires-python = ">=3.7"
 license = {text = "MIT"}
