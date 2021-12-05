@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+import awkward as ak
+import numpy as np
+import collections
+import heapq
+import typing
+
+
+def sign(x, y):
+    if y > x:
+        return 1
+    if y == x:
+        return 0
+    return -1
+
+
+class Coord(typing.NamedTuple):
+    x: int
+    y: int
+
+    def interval(self, other):
+        sx = sign(self.x, other.x)
+        sy = sign(self.y, other.y)
+
+        p = self
+        
+        while p != other:
+            yield p
+            p = Coord(p.x + sx, p.y + sy)
+            
+        yield p
+            
+
+def parse_coord(string):
+    x, y = string.split(",")
+    return Coord(int(x), int(y))
+
+
+def parse_line(row):
+    return [parse_coord(x) for x in row.split("->")]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser("Squid Game")
+    parser.add_argument("file", type=argparse.FileType("r"), default=sys.stdin)
+    args = parser.parse_args(args=argv)
+
+    occupancy = collections.Counter()
+
+    for row in args.file:
+        src, dst = parse_line(row)
+        points = src.interval(dst)
+        occupancy.update(points)
+
+    # Count overlaps
+    n = 0
+    for k, v in occupancy.items():
+        if v > 1:
+            n += 1  #
+    print(n)
+
+
+if __name__ == "__main__":
+    main()
