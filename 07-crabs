@@ -11,8 +11,8 @@ def main(argv=None):
     args = parser.parse_args(args=argv)
 
     x = np.loadtxt(args.file, delimiter=",", dtype=np.int64)
-    x_0 = np.arange(x.min(), x.max() + 1, dtype=np.int64)
-    dx = np.abs(x - x_0.reshape(-1, 1))
+    x_0 = np.mgrid[x.min() : x.max() + 1]
+    dx = np.abs(x - x_0[:, np.newaxis])
 
     cost_const = dx.sum(axis=1)
     cost_arithmetic = ((dx * (dx + 1)) // 2).sum(axis=1)
