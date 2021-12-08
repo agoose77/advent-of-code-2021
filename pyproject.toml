@@ -15,9 +15,6 @@ license = {text = "MIT"}
 [project.urls]
 homepage = ""
 
-[project.optional-dependencies]
-[tool]
-[tool.pdm]
 [tool.pdm.dev-dependencies]
 lint = [
     "black>=21.11b1",
